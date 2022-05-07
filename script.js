@@ -71,7 +71,7 @@ var abi = [
 abiDecoder.addABI(abi);
 // call abiDecoder.decodeMethod to use this - see 'getAllFunctionCalls' for more
 
-var contractAddress = '0xF19D1Ea9Bf34b23b005C7c0fA21541ecDd062abC'; // FIXME: fill this in with your contract's address/hash
+var contractAddress = '0x6f9Dbe8885FcD0e4252A7FeD1EcFB6F84Dae7683'; // FIXME: fill this in with your contract's address/hash
 var BlockchainSplitwise = new web3.eth.Contract(abi, contractAddress);
 
 //map<address, map<address, amount>>
@@ -79,8 +79,10 @@ var BlockchainSplitwise = new web3.eth.Contract(abi, contractAddress);
 var debtorToCreditorsMap = {};
 //a creditor may have multiple debtors
 var creditorToDebtorsMap = {};
-
+var split_strategy = [];
+var split_temp = [];
 var users_global = [];
+// var N = users_global.length
 
 // =============================================================================
 //                            Functions To Implement
@@ -100,18 +102,23 @@ async function getUsers() {
 
 async function downloadAll(){
 	var users = await BlockchainSplitwise.methods.getUsers().call();
-	users_global = users; // users list at the bottom left corner
-	// console.log(users)
+	users_global = users;
+	// console.log(users_global);
+	var graph =  new Array(users.length);
+	for(var i = 0;i < graph.length; i++){
+   		graph[i] = new Array(users.length);
+	}
 	for(var r = 0; r < users.length; r++){
 		for(var c = 0; c < users.length; c++){
-			if(r == c) continue;
+			if(r == c){
+				graph[r][c] = 0;
+				continue;
+			}
 			var debtor = users[r];
 			var creditor = users[c];
 			var amount = await BlockchainSplitwise.methods.lookup(debtor, creditor).call();
-			
+			graph[r][c] = amount;
 			if(amount == 0) continue;
-			// console.log(debtor, creditor, amount)
-
 			if(debtorToCreditorsMap[debtor] == null){
 				var map = {};
 				map[creditor] = amount;
@@ -126,20 +133,121 @@ async function downloadAll(){
 			}else{
 				creditorToDebtorsMap[creditor][debtor] = amount;
 			}
-			// console.log(debtorToCreditorsMap)
 		}
 	}
+	// console.log(graph)
+	minCashFlow(graph)
 }
+
+function getMin(arr)
+    {
+	var minInd = 0;
+	for (i = 1; i < users_global.length; i++)
+		if (arr[i] < arr[minInd])
+			minInd = i;
+	return minInd;
+    }
+
+    // A utility function that returns
+    // index of maximum value in arr
+function getMax(arr)
+    {
+	var maxInd = 0;
+	for (i = 1; i < users_global.length; i++)
+		if (arr[i] > arr[maxInd])
+			maxInd = i;
+	return maxInd;
+    }
+
+    // A utility function to return minimum of 2 values
+function minOf2(x , y)
+    {
+	return (x < y) ? x: y;
+    }
+
+    // amount[p] indicates the net amount
+    // to be credited/debited to/from person 'p'
+    // If amount[p] is positive, then
+    // i'th person will amount[i]
+    // If amount[p] is negative, then
+    // i'th person will give -amount[i]
+function minCashFlowRec(amount)
+    {
+
+	// Find the indexes of minimum and
+	// maximum values in amount
+	// amount[mxCredit] indicates the maximum amount
+	// to be given (or credited) to any person .
+	// And amount[mxDebit] indicates the maximum amount
+	// to be taken(or debited) from any person.
+	// So if there is a positive value in amount,
+	// then there must be a negative value
+	var mxCredit = getMax(amount), mxDebit = getMin(amount);
+
+	// If both amounts are 0, then
+	// all amounts are settled
+	if (amount[mxCredit] == 0 && amount[mxDebit] == 0)
+		return;
+
+	// Find the minimum of two amounts
+	var min = minOf2(-amount[mxDebit], amount[mxCredit]);
+	amount[mxCredit] -= min;
+	amount[mxDebit] += min;
+
+	// If minimum is the maximum amount to be
+	split_temp.push("User " + users_global[mxDebit] + " should pay " + min
+							+ " to " + "User " + users_global[mxCredit]);
+	// console.log("User " + users_global[mxDebit] + " should pay " + min
+	// 						+ " to " + "User " + users_global[mxCredit]);
+
+	// Recur for the amount array.
+	// Note that it is guaranteed that
+	// the recursion would terminate
+	// as either amount[mxCredit]  or
+	// amount[mxDebit] becomes 0
+	minCashFlowRec(amount);
+    }
+
+    // Given a set of persons as graph
+    // where graph[i][j] indicates
+    // the amount that person i needs to
+    // pay person j, this function
+    // finds and prints the minimum
+    // cash flow to settle all debts.
+function minCashFlow(graph)
+    {
+	// Create an array amount,
+	// initialize all value in it as 0.
+	var amount=Array.from({length: users_global.length}, (_, i) => 0);
+	split_temp = [];
+
+	// Calculate the net amount to
+	// be paid to person 'p', and
+	// stores it in amount[p]. The
+	// value of amount[p] can be
+	// calculated by subtracting
+	// debts of 'p' from credits of 'p'
+	for (p = 0; p < users_global.length; p++)
+	for (i = 0; i < users_global.length; i++)
+		amount[p] += (graph[i][p] - graph[p][i]);
+	// console.log(users_global.length);
+	// console.log(amount);
+	if(users_global.length!=0) {
+		minCashFlowRec(amount, split_temp);
+		split_strategy = split_temp;
+		console.log(split_strategy);
+	}
+    }
+
+
 
 // TODO: Get the total amount owed by the user specified by 'user'
 async function getTotalOwed(user) {
-	// console.log(user)
 	if(users_global == null || users_global.length == 0){
 		await downloadAll();
 	}
 
 	var debtorMap = debtorToCreditorsMap[user];
-	console.log(debtorMap)
 	var creditorMap = creditorToDebtorsMap[user];
 	var amount = 0.0;
 	for(var key in debtorMap){
@@ -180,10 +288,8 @@ async function getLastActive(user) {
 // The person you owe money is passed as 'creditor'
 // The amount you owe them is passed as 'amount'
 async function add_IOU(creditor, amount) {
-	// console.log(creditor, amount, web3.eth.defaultAccount)
 	BlockchainSplitwise.methods.add_IOU(creditor, parseInt(amount)).send({'from': web3.eth.defaultAccount, gas: 3141592});
 	await downloadAll();
-	// console.log(debtorToCreditorsMap)
 }
 
 // =============================================================================
@@ -253,61 +359,23 @@ async function doBFS(start, end, getNeighbors) {
 // This sets the default account on load and displays the total owed to that
 // account.
 web3.eth.getAccounts().then((response)=> {
-	// 这一步就更新了。。。
-	console.log(debtorToCreditorsMap)
 	web3.eth.defaultAccount = response[0];
-	// response = 0
 
 	getTotalOwed(web3.eth.defaultAccount).then((response)=>{
-		// console.log("default")
-		// console.log(response)
 		$("#total_owed").html("$"+response);
-
-		// Get Creditors and Amount
-		var creditor_amount = ""
-		var temp = debtorToCreditorsMap[web3.eth.defaultAccount]
-		console.log(web3.eth.defaultAccount)
-		console.log(temp)
-		for (var key in temp) {
-			creditor_amount += "<p>" + key + ": " + '<b>' + temp[key] + '</b>' + "</p>"
-		}
-		// for (var i = 0; i < length(temp); i++) {
-		// 	creditor_amount += "<p>" + temp[0]
-		// }
-		$("#creditors").html(creditor_amount);
 	});
 
 	getLastActive(web3.eth.defaultAccount).then((response)=>{
 		time = timeConverter(response)
 		$("#last_active").html(time)
 	});
-
 });
 
 // This code updates the 'My Account' UI with the results of your functions
 $("#myaccount").change(function() {
-	console.log(debtorToCreditorsMap)
 	web3.eth.defaultAccount = $(this).val();
-	// console.log(response)
-	// response = 0
-
-
-	var creditor_amount = ""
-	var temp = debtorToCreditorsMap[web3.eth.defaultAccount]
-	console.log(web3.eth.defaultAccount)
-	console.log(temp)
-	for (var key in temp) {
-		creditor_amount += "<p>" + key + ": " + '<b>' + temp[key] + '</b>' + "</p>"
-	}
-	// for (var i = 0; i < length(temp); i++) {
-	// 	creditor_amount += "<p>" + temp[0]
-	// }
-	$("#creditors").html(creditor_amount);
-
 
 	getTotalOwed(web3.eth.defaultAccount).then((response)=>{
-		// console.log("update")
-		// console.log(response)
 		$("#total_owed").html("$"+response);
 	})
 
@@ -334,16 +402,9 @@ getUsers().then((response)=>{
 // It passes the values from the two inputs above
 $("#addiou").click(function() {
 	web3.eth.defaultAccount = $("#myaccount").val(); //sets the default account
-	// web3.eth.defaultAccount = 0; //sets the default account
-	// console.log($("#amount").val())
 	add_IOU($("#creditor").val(), $("#amount").val()).then((response)=>{
 			window.location.reload(true); // refreshes the page after add_IOU returns and the promise is unwrapped
-	})
-	// console.log(debtorToCreditorsMap['0xf768642ba8fb2d3a12d3ef1680fe1c913086c04d'])
-	// for (var key in debtorToCreditorsMap) {
-	// 	console.log(key + ":" + debtorToCreditorsMap[key]); 
-	// 	// 这一步字典还没有更新
-	// }
+		})
 });
 
 // This is a log function, provided if you want to display things to the page instead of the JavaScript console
