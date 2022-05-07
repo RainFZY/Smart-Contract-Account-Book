@@ -1,7 +1,7 @@
 body {
  	font-family: 'Source Sans Pro', 'Arial';
 	background-color:#EEE;
-	padding: 30px;
+	padding: 20px;
 	background-image:url('images/bg4.jpg');
 	background-size:cover;
 }
@@ -37,14 +37,14 @@ body {
 }
 .users {
 	position: absolute;
-	width: 425px;
-	height: 250px;
+	width: 320px;
+	height: 225px;
 	background-color: #CCC;
 	padding: 10px;
 	bottom: 10px;
 	left: 10px;
-	top: 10 px;
 	opacity: 0.75;
+	font-size: 10px;
 }
 
 #amount {
@@ -71,4 +71,70 @@ button {
 .creditors{
 	font-size: x-small;
 	font-style:italic;
+}
+
+#addiou {
+    width: 200px; /* 宽度 */
+    height: 50px; /* 高度 */
+    border-width: 0px; /* 边框宽度 */
+    border-radius: 3px; /* 边框半径 */
+    background: #1E90FF; /* 背景颜色 */
+    cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+    outline: none; /* 不显示轮廓线 */
+    font-family: Microsoft YaHei; /* 设置字体 */
+    color: white; /* 字体颜色 */
+    font-size: 17px; /* 字体大小 */
+	text-align: center;
+}
+
+#myBtn {
+    width: 275px; /* 宽度 */
+    height: 50px; /* 高度 */
+    border-width: 0px; /* 边框宽度 */
+    border-radius: 3px; /* 边框半径 */
+    background: #1E90FF; /* 背景颜色 */
+    cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
+    outline: none; /* 不显示轮廓线 */
+    font-family: Microsoft YaHei; /* 设置字体 */
+    color: white; /* 字体颜色 */
+    font-size: 17px; /* 字体大小 */
+	text-align: center;
+}
+
+/* 弹窗 (background) */
+.modal {
+    display: none; /* 默认隐藏 */
+    position: fixed; /* 固定定位 */
+    z-index: 1; /* 设置在顶层 */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+/* 弹窗内容 */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+}
+
+/* 关闭按钮 */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

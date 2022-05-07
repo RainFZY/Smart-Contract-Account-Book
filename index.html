@@ -15,14 +15,14 @@
       <p>Total Owed: <span id="total_owed"></span></p>
       <p>Last Activity: <span id="last_active"></span></p>
       <p>Creditors: </p>
-      <ol id="creditors" class="creditors"></ol>
+      <h id="creditors" class="creditors"></h>
     </div>
     <div class="wallet_addresses_panel">
         <h2>Wallet Addresses</h2>
         <ol class="wallet_addresses"></ol>
     </div>
     <div class="main">
-      <h2>Add IOU</h2>
+      <h2>Add Transaction</h2>
 
       <label for="creditor">
       	Address of person you owe:
@@ -34,10 +34,20 @@
       </label>
 		  <input id="amount" type="text"> 
       
-      <button id="addiou">Add IOU</button>
+      <button id="addiou">Add Transaction</button>
+      <button id="myBtn">Show Debt Simplification</button>
+      <!-- 弹窗 -->
+      <div id="myModal" class="modal">
+        <!-- 弹窗内容 -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>弹窗中的文本...</p>
+        </div>
+
+      </div>
       <div class="users">
-        <h2>Users</h2>
-        <ul id="all_users"></ul>
+        <h2>Current Users</h2>
+        <p id="all_users"></p>
         <pre id="log"></pre>
       </div>
     </div>

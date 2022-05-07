@@ -71,7 +71,7 @@ var abi = [
 abiDecoder.addABI(abi);
 // call abiDecoder.decodeMethod to use this - see 'getAllFunctionCalls' for more
 
-var contractAddress = '0x6f9Dbe8885FcD0e4252A7FeD1EcFB6F84Dae7683'; // FIXME: fill this in with your contract's address/hash
+var contractAddress = '0x253e44c7Ec97f247eeaD10a02eC7ff20EE2d9aee'; // FIXME: fill this in with your contract's address/hash
 var BlockchainSplitwise = new web3.eth.Contract(abi, contractAddress);
 
 //map<address, map<address, amount>>
@@ -363,6 +363,19 @@ web3.eth.getAccounts().then((response)=> {
 
 	getTotalOwed(web3.eth.defaultAccount).then((response)=>{
 		$("#total_owed").html("$"+response);
+
+		// Get Creditors and Amount
+		var creditor_amount = ""
+		var temp = debtorToCreditorsMap[web3.eth.defaultAccount]
+		// console.log(web3.eth.defaultAccount)
+		// console.log(temp)
+		for (var key in temp) {
+			creditor_amount += "<p>" + key + ": " + '<b>' + temp[key] + '</b>' + "</p>"
+		}
+		// for (var i = 0; i < length(temp); i++) {
+		// 	creditor_amount += "<p>" + temp[0]
+		// }
+		$("#creditors").html(creditor_amount);
 	});
 
 	getLastActive(web3.eth.defaultAccount).then((response)=>{
@@ -374,6 +387,18 @@ web3.eth.getAccounts().then((response)=> {
 // This code updates the 'My Account' UI with the results of your functions
 $("#myaccount").change(function() {
 	web3.eth.defaultAccount = $(this).val();
+
+	var creditor_amount = ""
+	var temp = debtorToCreditorsMap[web3.eth.defaultAccount]
+	// console.log(web3.eth.defaultAccount)
+	// console.log(temp)
+	for (var key in temp) {
+		creditor_amount += "<p>" + key + ": " + '<b>' + temp[key] + '</b>' + "</p>"
+	}
+	// for (var i = 0; i < length(temp); i++) {
+	// 	creditor_amount += "<p>" + temp[0]
+	// }
+	$("#creditors").html(creditor_amount);
 
 	getTotalOwed(web3.eth.defaultAccount).then((response)=>{
 		$("#total_owed").html("$"+response);
@@ -472,3 +497,30 @@ async function sanityCheck() {
 }
 
 //sanityCheck() //Uncomment this line to run the sanity check when you first open index.html
+
+
+// 获取弹窗
+var modal = document.getElementById('myModal');
+ 
+// 打开弹窗的按钮对象
+var btn = document.getElementById("myBtn");
+ 
+// 获取 <span> 元素，用于关闭弹窗
+var span = document.querySelector('.close');
+ 
+// 点击按钮打开弹窗
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+ 
+// 点击 <span> (x), 关闭弹窗
+span.onclick = function() {
+    modal.style.display = "none";
+}
+ 
+// 在用户点击其他地方时，关闭弹窗
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
