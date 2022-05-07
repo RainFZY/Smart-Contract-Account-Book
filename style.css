@@ -2,14 +2,16 @@ body {
  	font-family: 'Source Sans Pro', 'Arial';
 	background-color:#EEE;
 	padding: 30px;
+	background-image:url('images/bg4.jpg');
+	background-size:cover;
 }
 .main {
 	width: 50%;
 }
 .panel {
 	position: absolute;
-	top: 20px;
-	width: 400px;
+	top: 10px;
+	width: 350px;
 	background-color: #CCC;
 	padding: 20px;
 }
@@ -24,15 +26,27 @@ body {
 }
 .wallet_addresses_panel {
 	position: absolute;
-	width: 300px;
-	height: 160px;
+	width: 320px;
+	height: 200px;
 	background-color: #CCC;
-	padding: 20px;
+	padding: 10px;
 	bottom: 10px;
 	right: 10px;
 	font-size: 10px;
-	opacity: 0.5;
+	opacity: 0.75;
 }
+.users {
+	position: absolute;
+	width: 425px;
+	height: 250px;
+	background-color: #CCC;
+	padding: 10px;
+	bottom: 10px;
+	left: 10px;
+	top: 10 px;
+	opacity: 0.75;
+}
+
 #amount {
 	width: 140px;
 }

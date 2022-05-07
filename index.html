@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Web3.js Demo</title>
+    <title>Smart Contract Account Book</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="./web3.min.js"></script>
     <script src="./abi-decoder.js"></script>
   </head>
   <body>
-  	<h1>Blockchain Simple Demo1, Ethereum dev</h1>
-  <div class="panel panel_right">
-		<h2>My Account</h2>
-		<select id="myaccount" class="account"></select>
-		<p>Total Owed: <span id="total_owed"></span></p>
-		<p>Last Activity: <span id="last_active"></span></p>
-    <p>Creditors: </p>
-		<ol id="creditors" class="creditors"></ol>
-	</div>
-	<div class="wallet_addresses_panel">
-		<h2>Wallet Addresses</h2>
-		<ol class="wallet_addresses"></ol>
-	</div>
+  	<h1>A Smart Contract Account Book</h1>
+    <h2 style="font-style: italic;">ELEN 6883 Final Project</h2>
+    <div class="panel panel_right">
+      <h2>My Account</h2>
+      <select id="myaccount" class="account"></select>
+      <p>Total Owed: <span id="total_owed"></span></p>
+      <p>Last Activity: <span id="last_active"></span></p>
+      <p>Creditors: </p>
+      <ol id="creditors" class="creditors"></ol>
+    </div>
+    <div class="wallet_addresses_panel">
+        <h2>Wallet Addresses</h2>
+        <ol class="wallet_addresses"></ol>
+    </div>
     <div class="main">
       <h2>Add IOU</h2>
 
@@ -31,12 +32,14 @@
       <label for="amount">
       	Amount you owe them:
       </label>
-		<input id="amount" type="text">
+		  <input id="amount" type="text"> 
       
       <button id="addiou">Add IOU</button>
-      <h2>Users</h2>
-      <ul id="all_users"></ul>
-      <pre id="log"></pre>
+      <div class="users">
+        <h2>Users</h2>
+        <ul id="all_users"></ul>
+        <pre id="log"></pre>
+      </div>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
