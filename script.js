@@ -71,7 +71,7 @@ var abi = [
 abiDecoder.addABI(abi);
 // call abiDecoder.decodeMethod to use this - see 'getAllFunctionCalls' for more
 
-var contractAddress = '0xCb8B391eE37aE39dccF02786047d8E6F6305b28D'; // FIXME: fill this in with your contract's address/hash
+var contractAddress = '0xF19D1Ea9Bf34b23b005C7c0fA21541ecDd062abC'; // FIXME: fill this in with your contract's address/hash
 var BlockchainSplitwise = new web3.eth.Contract(abi, contractAddress);
 
 //map<address, map<address, amount>>
@@ -183,7 +183,7 @@ async function add_IOU(creditor, amount) {
 	// console.log(creditor, amount, web3.eth.defaultAccount)
 	BlockchainSplitwise.methods.add_IOU(creditor, parseInt(amount)).send({'from': web3.eth.defaultAccount, gas: 3141592});
 	await downloadAll();
-	console.log(debtorToCreditorsMap)
+	// console.log(debtorToCreditorsMap)
 }
 
 // =============================================================================
@@ -257,11 +257,24 @@ web3.eth.getAccounts().then((response)=> {
 	console.log(debtorToCreditorsMap)
 	web3.eth.defaultAccount = response[0];
 	// response = 0
-	$("#creditors").html("1:"+"100");
+
 	getTotalOwed(web3.eth.defaultAccount).then((response)=>{
 		// console.log("default")
 		// console.log(response)
 		$("#total_owed").html("$"+response);
+
+		// Get Creditors and Amount
+		var creditor_amount = ""
+		var temp = debtorToCreditorsMap[web3.eth.defaultAccount]
+		console.log(web3.eth.defaultAccount)
+		console.log(temp)
+		for (var key in temp) {
+			creditor_amount += "<p>" + key + ": " + '<b>' + temp[key] + '</b>' + "</p>"
+		}
+		// for (var i = 0; i < length(temp); i++) {
+		// 	creditor_amount += "<p>" + temp[0]
+		// }
+		$("#creditors").html(creditor_amount);
 	});
 
 	getLastActive(web3.eth.defaultAccount).then((response)=>{
@@ -277,7 +290,21 @@ $("#myaccount").change(function() {
 	web3.eth.defaultAccount = $(this).val();
 	// console.log(response)
 	// response = 0
-	$("#creditors").html("1:"+"100");
+
+
+	var creditor_amount = ""
+	var temp = debtorToCreditorsMap[web3.eth.defaultAccount]
+	console.log(web3.eth.defaultAccount)
+	console.log(temp)
+	for (var key in temp) {
+		creditor_amount += "<p>" + key + ": " + '<b>' + temp[key] + '</b>' + "</p>"
+	}
+	// for (var i = 0; i < length(temp); i++) {
+	// 	creditor_amount += "<p>" + temp[0]
+	// }
+	$("#creditors").html(creditor_amount);
+
+
 	getTotalOwed(web3.eth.defaultAccount).then((response)=>{
 		// console.log("update")
 		// console.log(response)

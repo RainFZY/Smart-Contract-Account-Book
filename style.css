@@ -9,7 +9,7 @@ body {
 .panel {
 	position: absolute;
 	top: 20px;
-	width: 300px;
+	width: 400px;
 	background-color: #CCC;
 	padding: 20px;
 }
@@ -52,4 +52,9 @@ button {
 	padding: 15px 30px;
 	border: 1px solid #666;
 	background: #CCC;
+}
+
+.creditors{
+	font-size: x-small;
+	font-style:italic;
 }
