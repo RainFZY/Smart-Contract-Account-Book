@@ -10,7 +10,7 @@
 
 **TO DO: ...**
 
-## Billing Display
+### Billing Display
 
 **TO DO: ...**
 
@@ -29,4 +29,4 @@
 
 Please feel free to check our demo at **XXXXXXX.youtube (TO: DO)**！
 
-![](UI.png)
+![](UI.PNG)
