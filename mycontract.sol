@@ -28,7 +28,7 @@ contract Splitwise{
         return 0;
     }
     
-    function add_IOU(address creditor, uint32 amount)public {
+    function add_Trans(address creditor, uint32 amount)public {
         require(amount > 0);
         require(msg.sender != creditor);
         // This debtor doesn't have any creditor

@@ -30,21 +30,23 @@
       	<input type="text" id="creditor">
       
       <label for="amount">
-      	Amount you owe them:
+      	Amount you owe him/her:
       </label>
 		  <input id="amount" type="text"> 
       
       <button id="addiou">Add Transaction</button>
+
       <button id="myBtn">Show Debt Simplification</button>
-      <!-- 弹窗 -->
+      <!-- popup -->
       <div id="myModal" class="modal">
-        <!-- 弹窗内容 -->
+        <!-- popup content -->
         <div class="modal-content">
           <span class="close">&times;</span>
-          <p>弹窗中的文本...</p>
+          <p id="history"> None
+          </p>
         </div>
-
       </div>
+
       <div class="users">
         <h2>Current Users</h2>
         <p id="all_users"></p>
