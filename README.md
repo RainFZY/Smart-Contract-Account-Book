@@ -27,6 +27,6 @@
 
 ## Demo Display:
 
-Please feel free to check our demo at **XXXXXXX.youtube (TO: DO)**！
+Please feel free to check our demo at https://youtu.be/az5OQGlYjJU
 
 ![](UI.PNG)
