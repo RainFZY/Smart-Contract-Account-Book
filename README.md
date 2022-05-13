@@ -2,21 +2,21 @@
 
 ## Project Overview
 
-**TO DO: ...**
+**TO DO: Our project aims to realize the one-to-one accounting, billing display and the transaction simplification. One-to-one accounting helps users to record their bills with the specific account. Billing display shows the billing information and the accounts owing to other accounts. Debt simplification shows the shortest path that can pay the bills for all the accounts.**
 
 ## DAPP Function:
 
 ### One-to-one Accounting
 
-**TO DO: ...**
+**TO DO: Help users to record their bills with the specific**
 
 ### Billing Display
 
-**TO DO: ...**
+**TO DO: Show the billing information and the corresponding accounts**
 
 ### Debt Simplification
 
-**TO DO: ...**
+**TO DO: Calculate the shortest path that can pay the bills for all the accounts**
 
 ## Run the Code
 
