@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**TO DO: ...**
+Combining the basic concept of smart contract and Ethereum introduced on lecture four and five, we are going to build a decentralized application (DAPP) called Smart Contract Account Book for our project. The basic functions of our DAPP are one-to-one accounting, billing displaying and the transaction simplification, which can directly display the amount of money of one user owing to other users, and moreover provide a simplified approach for all the users to pay their debts in minimum number of transaction. This project is not only a practice of smart contract coding but also a practical application called Splitwise implemented on Ethereum based on decentralized concept.
 
 ## DAPP Function:
 
